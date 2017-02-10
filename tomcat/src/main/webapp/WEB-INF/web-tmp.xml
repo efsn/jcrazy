@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                      http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	version="3.1">
+
+	<filter>
+		<filter-name>webLogFilter</filter-name>
+		<filter-class>com.codeyn.base.log.WebLogFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>webLogFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>RestyFilter</filter-name>
+		<filter-class>cn.dreampie.route.RestyFilter</filter-class>
+		<init-param>
+			<param-name>exclusions</param-name>
+			<!--把不经过Resty过滤的文件或者目录配置在这儿，逗号分割 -->
+			<param-value>/**/*.js,/**/*.gif,/**/*.jpg,/**/*.png,/**/*.css,/**/*.ico,/druid/**</param-value>
+		</init-param>
+		<init-param>
+			<!--Resty的核心配置文件，看第2点 -->
+			<param-name>configClass</param-name>
+			<param-value>com.codeyn.wechat.resty.conf.AppConf</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>RestyFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+</web-app>

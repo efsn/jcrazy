@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="15 seconds">
+	<property name="pattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p %X{token:--} [%t] %C.%M\\(%L\\) | %m%n"/>
+	<property name="pattern-info" value="%d{yyyy/MM/dd-HH:mm:ss.SSS} %-5level [%thread] %class:%line>>%msg%n"/>
+	<property name="logBase" value="${catalina.base}/logs/friday"/>
+	
+	<appender name="ROLLING-INFO"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${logBase}/info/project.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logBase}/info/%d.log.gz</fileNamePattern>
+			<maxHistory>30</maxHistory>
+			<timeBasedFileNamingAndTriggeringProlicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>64MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringProlicy>
+		</rollingPolicy>
+		<encoder>
+			<charset>UTF-8</charset>
+			<pattern>${pattern-info}</pattern>
+		</encoder>	
+	</appender>
+	
+	<appender name="ROLLING-DEBUG"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${logBase}/debug/project.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logBase}/debug/%d.log.gz</fileNamePattern>
+			<maxHistory>30</maxHistory>
+			<timeBasedFileNamingAndTriggeringProlicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>64MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringProlicy>
+		</rollingPolicy>
+		<encoder>
+			<charset>UTF-8</charset>
+			<pattern>${pattern}</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<charset>UTF-8</charset>
+			<pattern>${pattern-info}</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="ROLLING-ERROR"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${logBase}/error/project.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logBase}/error/%d.log.gz</fileNamePattern>
+			<maxHistory>30</maxHistory>
+			<timeBasedFileNamingAndTriggeringProlicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>64MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringProlicy>
+		</rollingPolicy>
+		<encoder>
+			<charset>UTF-8</charset>
+			<pattern>${pattern-info}</pattern>
+		</encoder>	
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">  
+	        <level>ERROR</level>  
+	        <onMatch>ACCEPT</onMatch>  
+	        <onMismatch>DENY</onMismatch>  
+	    </filter>  
+	</appender>
+	
+	<root level="ERROR">
+		<appender-ref ref="ROLLING-ERROR"/>
+	</root>
+	
+	<root level="INFO">
+		<appender-ref ref="ROLLING-INFO"/>
+	</root>
+	
+	<root level="DEBUG">
+		<appender-ref ref="CONSOLE"/>
+		<appender-ref ref="ROLLING-DEBUG"/>
+	</root>
+	
+</configuration>
